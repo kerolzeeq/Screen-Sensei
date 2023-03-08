@@ -8,14 +8,12 @@ def load_model():
     
 load_model()
 
-with st.columns(3)[1]:
-     st.image('Sensei Screen Logo2.png')
-     
-
-st.markdown("<h2 style='text-align: center; color: white;'>Welcome to Sensei Screen!</h2>", unsafe_allow_html=True)
-
+st.markdown("<h2 style='text-align: center; color: white;'>Welcome to SenseiScreen! 🥋</h2>", unsafe_allow_html=True)
+st.markdown("<h4 style='text-align: center; color: #D3D3D3;'>Guiding you to cinematic enlightenment. 🎥✨</h2>", 
+unsafe_allow_html=True)
+st.text("")
 messages = [
-        {"role": "system", "content": "You are an expert assistant in movies and films"}
+        {"role": "system", "content": "Your name is SenseiScreen and you are an expert assistant in movies and films"}
     ]
 
 
@@ -43,16 +41,26 @@ def generate_answer():
         messages.append(
             {"role": "system", "content": user_message}
         )
-        chat = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo", messages=messages
-        )
+        try:
+            chat = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo", messages=messages
+            )
+        except:
+            st_message("I'm meditating right now to refresh my memory. Please ask me later (chatGPT is busy probably)",is_user=False ,avatar_style="big-smile",
+                                      seed="sensei12")
+
 
     bot_message = chat.choices[0].message.content
-    st.session_state.history.append({"message": user_message, "is_user": True})
-    st.session_state.history.append({"message": bot_message, "is_user": False})
+    st.session_state.history.append({"message": user_message, "is_user": True, "avatar_style": "adventurer",
+                                      "seed":"blue"})
+    st.session_state.history.append({"message": bot_message, "is_user": False, "avatar_style": "big-smile",
+                                      "seed":"sensei12"})
     messages.append({"role": "assistant", "content": bot_message})
 
-st.text_input("Talk to the bot", key="input_text", on_change=generate_answer)
+st.text_input("Ask me anything about your favourite show or movie!", key="input_text", on_change=generate_answer,placeholder="Ask away disciple...")
+
+st_message("Hello! My name is SenseiScreen and I am an expert assistant in movies and films. I'm here to help you with anything related to movies and TV shows, from finding new releases to discussing plot points and character development. Whether you're a casual movie watcher or a film buff, I'm here to make sure you have the best movie-watching experience possible.",is_user=False ,avatar_style="big-smile",
+                                      seed="sensei12")
 
 for chat in st.session_state.history:
     st_message(**chat) #unpacking
