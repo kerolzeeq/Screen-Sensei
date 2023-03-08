@@ -5,7 +5,7 @@ import openai
 @st.experimental_singleton
 def load_model():
     #local
-    #openai.api_key = 'sk-Hdle7PRnOHmXdyJIVsTeT3BlbkFJ0O2srrGDtErFi7da24Cfs'
+    #openai.api_key = APIKEYHere
     #public
     openai.api_key = st.secrets['api_key']
     
