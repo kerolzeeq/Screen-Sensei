@@ -2,14 +2,11 @@ import streamlit as st
 from streamlit_chat import message as st_message
 import openai
 
-@st.experimental_singleton
-def load_model():
-    #local
-    #openai.api_key = APIKEYHere
-    #public
-    openai.api_key = st.secrets['api_key']
-    
-load_model()
+#local
+#openai.api_key = APIKEYHere
+#public
+openai.api_key = st.secrets['api_key']
+
 
 st.markdown("<h2 style='text-align: center; color: white;'>Welcome to SenseiScreen! 🥋</h2>", unsafe_allow_html=True)
 st.markdown("<h4 style='text-align: center; color: #D3D3D3;'>Guiding you to cinematic enlightenment. 🎥✨</h2>", 
