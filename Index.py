@@ -4,7 +4,10 @@ import openai
 
 @st.experimental_singleton
 def load_model():
-    openai.api_key = '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'
+    #local
+    #openai.api_key = 'sk-Hdle7PRnOHmXdyJIVsTeT3BlbkFJ0O2srrGDtErFi7da24Cfs'
+    #public
+    openai.api_key = st.secrets['api_key']
     
 load_model()
 
@@ -45,17 +48,19 @@ def generate_answer():
             chat = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo", messages=messages
             )
+
+            bot_message = chat.choices[0].message.content
+            st.session_state.history.append({"message": user_message, "is_user": True, "avatar_style": "adventurer",
+                                            "seed":"blue"})
+            st.session_state.history.append({"message": bot_message, "is_user": False, "avatar_style": "big-smile",
+                                            "seed":"sensei12"})
+            messages.append({"role": "assistant", "content": bot_message})
         except:
-            st_message("I'm meditating right now to refresh my memory. Please ask me later (chatGPT is busy probably)",is_user=False ,avatar_style="big-smile",
-                                      seed="sensei12")
+            st.warning("ScreenSensei is meditating right now. Please ask me later (chatGPT is busy probably)")
+            
 
 
-    bot_message = chat.choices[0].message.content
-    st.session_state.history.append({"message": user_message, "is_user": True, "avatar_style": "adventurer",
-                                      "seed":"blue"})
-    st.session_state.history.append({"message": bot_message, "is_user": False, "avatar_style": "big-smile",
-                                      "seed":"sensei12"})
-    messages.append({"role": "assistant", "content": bot_message})
+    
 
 st.text_input("Ask me anything about your favourite show or movie!", key="input_text", on_change=generate_answer,placeholder="Ask away disciple...")
 
